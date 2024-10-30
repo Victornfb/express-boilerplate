@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:14.1-alpine
+    container_name: "postgres-boilerplate"
+    ports:
+      - "5432:5432"
+    networks:
+      - network
+    volumes:
+      - ~/.docker-conf/postgres/data/:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=boilerplate
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d admin"]
+      interval: 2s
+      timeout: 2s
+      retries: 3
+
+networks:
+  network:
+    driver: bridge
